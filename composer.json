@@ -1,0 +1,52 @@
+{
+  "name": "adepem/laravel-hirefire",
+  "description": "Hirefire middleware for Laravel",
+  "keywords": [
+    "hirefire",
+    "middleware",
+    "laravel"
+  ],
+  "homepage": "https://github.com/adepem/laravel-hirefire",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "François Pradel",
+      "email": "francois.pradel@adepem.com",
+      "homepage": "https://www.adepem.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.4 || ^8.0",
+    "nesbot/carbon": "^2.0",
+    "spatie/laravel-package-tools": "^1.9"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^6.19",
+    "phpunit/phpunit": "^9.3",
+    "timacdonald/log-fake": "^1.9"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Adepem\\HirefireMiddleware\\HirefireMiddlewareServiceProvider"
+      ]
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Adepem\\HirefireMiddleware\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Adepem\\HirefireMiddleware\\Test\\": "tests"
+    }
+  },
+  "scripts": {
+    "test": "phpunit"
+  }
+}
