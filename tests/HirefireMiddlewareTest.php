@@ -3,10 +3,8 @@
 namespace Adepem\HirefireMiddleware\Test;
 
 use Adepem\HirefireMiddleware\HirefireMiddleware;
-use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 use TiMacDonald\Log\LogFake;
 
 class HirefireMiddlewareTest extends TestCase
@@ -73,22 +71,21 @@ class HirefireMiddlewareTest extends TestCase
     public function it_logs_correct_queue_time_if_enabled_and_header_is_in_the_past()
     {
         $passed = false;
-        CarbonImmutable::setTestNow(now()->startOfSecond());
+
+        $this->travelTo(now()->startOfSecond());
 
         config()->set('hirefire.log_queue_time', true);
         $middleware = new HirefireMiddleware();
         $request = new Request();
         $request->headers->add([
-            'X-Request-Start' => now()->subMillisecond()->valueOf(),
+            'X-Request-Start' => now()->subMilliseconds(999)->valueOf(),
         ]);
 
         $middleware->handle($request, function () use (&$passed) {
             $passed = true;
         });
 
-        Log::channel('laravel-hirefire')->assertLogged('info', function ($message, $context) {
-            return Str::of($message)->match('/[hirefire:router] queue=\d+ms/');
-        });
+        Log::channel('laravel-hirefire')->assertLoggedMessage('info', '[hirefire:router] queue=999ms');
         $this->assertTrue($passed);
     }
 }
